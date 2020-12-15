@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ST media checklist</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <h2>ST magazine checklist</h2>
+            <h4>2020/12/15版</h2>
+        </div>
+        <div class="col-lg-10 offset-lg-1">  
+            <ul id="view" style="white-space: pre-wrap;" class="list-group"></div>
+        </div>
+        <div id="mmm" >
+            <a href="#">
+            <i class="fas fa-chevron-up pageTop-chevron">▲</i>
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+                var c = document.getElementsByName("checklists");
+                var chklist;
+                if (document.cookie) {
+                    chklist = document.cookie.split(";");
+                };
+                c.forEach(function (ci, i) {
+                    for (let j = 0; j <  chklist.length; j++) {
+                       if (chklist && ' ' + ci.id === chklist[j].split('=')[0] && chklist[j].split('=')[1] === 'true'){
+                        ci.checked = true;
+                        break;
+                       } 
+                    }
+                    ci.addEventListener('click', function () {
+                        c.forEach(function (cj) {
+                            var x = cj.id;
+                            var y = cj.checked;
+
+                            var expire = new Date();
+                            expire.setTime(expire.getTime() + 1000 * 3600 * 24);
+                            document.cookie = x + '=' + y + '; expires=' + expire.toUTCString();
+                        });
+
+                    });
+                });
+
+            });
+        //page topボタン
+        $(function () {
+            var pagetop = $('#mmm');
+            // ボタンをクリックしたら、スクロールして上に戻る
+            pagetop.click(function () {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 1000);
+                return false;
+            });
+        });
+
+        $(function() {
+            $.getJSON('json/checklist202012.json', function (json) {
+                var items = json;
+                $.each(items,function(i){
+                    $('#view').append(
+                    '<li class="list-group-item d-flex justify-content-between align-items-center"><input type="checkbox" class="form-check-input" name="checklists"' +
+                    'id="'+ this.id + '">'+ this.title +
+                    ' : ' + items[i].time + '</li>');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
