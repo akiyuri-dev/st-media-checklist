@@ -36,12 +36,15 @@
                     chklist = document.cookie.split(";");
                 };
                 c.forEach(function (ci, i) {
-                    for (let j = 0; j <  chklist.length; j++) {
-                       if (chklist && ' ' + ci.id === chklist[j].split('=')[0] && chklist[j].split('=')[1] === 'true'){
-                        ci.checked = true;
-                        break;
-                       } 
+                    if(chklist){
+                        for (let j = 0; j < chklist.length; j++) {
+                            if (chklist && ' ' + ci.id === chklist[j].split('=')[0] && chklist[j].split('=')[1] === 'true') {
+                                ci.checked = true;
+                                break;
+                            }
+                        }
                     }
+                    
                     ci.addEventListener('click', function () {
                         c.forEach(function (cj) {
                             var x = cj.id;
